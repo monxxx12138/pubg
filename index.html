@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<meta name="theme-color" content="#0b0d10" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="PUBG 手册" />
+<title>PUBG 新手手册 · 枪械与小知识</title>
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="apple-touch-icon" href="icon-180.png" />
+<link rel="icon" href="icon-192.png" />
+<style>
+  :root{
+    --ink:#0b0d10; --fg:#f2f4f7; --dim:#8b95a5; --line:rgba(255,255,255,.08);
+    --gold:#e8b33d; --red:#e2574c; --green:#5ce0a0; --blue:#6aa9ff;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;min-height:100%}
+  body{
+    background:
+      radial-gradient(120% 55% at 50% -10%, rgba(232,179,61,.16), transparent 60%),
+      radial-gradient(80% 40% at 90% 110%, rgba(226,87,76,.10), transparent 60%),
+      var(--ink);
+    color:var(--fg);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    padding:calc(env(safe-area-inset-top) + 16px) 14px calc(env(safe-area-inset-bottom) + 24px);
+  }
+  .wrap{max-width:560px;margin:0 auto}
+  header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .badge{width:40px;height:40px;border-radius:11px;flex:0 0 auto;object-fit:cover;box-shadow:0 6px 18px rgba(232,179,61,.25)}
+  h1{font-size:18px;margin:0;font-weight:800;letter-spacing:.3px}
+  .sub{font-size:12px;color:var(--dim);margin-top:2px}
+  .search{
+    width:100%;margin:6px 0 14px;padding:11px 14px;border-radius:14px;border:1px solid var(--line);
+    background:rgba(255,255,255,.05);color:var(--fg);font:inherit;font-size:14px;outline:none
+  }
+  .search::placeholder{color:#5f6977}
+  .tabs{display:flex;gap:8px;margin-bottom:14px}
+  .tab{
+    flex:1;text-align:center;padding:10px;border-radius:12px;border:1px solid var(--line);
+    background:rgba(255,255,255,.03);color:var(--dim);font-size:13.5px;font-weight:650;cursor:pointer
+  }
+  .tab.on{background:linear-gradient(160deg,rgba(232,179,61,.22),rgba(232,179,61,.06));border-color:rgba(232,179,61,.5);color:#ffe0a3}
+  .sec{margin-bottom:22px}
+  .sec-h{display:flex;align-items:baseline;gap:8px;margin:0 0 10px}
+  .sec-h h2{font-size:15px;margin:0;font-weight:750}
+  .sec-h .n{font-size:11px;color:var(--dim)}
+  .card{background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02));
+    border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}
+  .tier{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.055)}
+  .tier:last-child{border-bottom:0}
+  .rank{
+    flex:0 0 auto;width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+    font-weight:800;font-size:13px;letter-spacing:.5px
+  }
+  .rank.T0{background:linear-gradient(160deg,#e8b33d,#a97b13);color:#241a00}
+  .rank.T1{background:linear-gradient(160deg,#b06bd8,#6a2f9a);color:#fff}
+  .rank.T2{background:linear-gradient(160deg,#4f8bd8,#26528f);color:#fff}
+  .rank.T3{background:rgba(255,255,255,.10);color:#9aa4b2}
+  .tier .body{flex:1;min-width:0}
+  .tier .nm{font-weight:700;font-size:14px}
+  .tier .ds{color:var(--dim);font-size:12.5px;margin-top:2px;line-height:1.55}
+  .tag{display:inline-block;font-size:10.5px;padding:1px 6px;border-radius:5px;border:1px solid var(--line);color:var(--dim);margin-left:6px;vertical-align:1px}
+  .tag.crate{color:#ffd08a;border-color:rgba(255,170,60,.4)}
+  .tag.easy{color:#5ce0a0;border-color:rgba(92,224,160,.35)}
+  .tag.hard{color:#ff8b8d;border-color:rgba(255,100,100,.35)}
+  ul.tips{margin:0;padding-left:18px}
+  ul.tips li{margin:7px 0;font-size:13.5px;line-height:1.62}
+  ul.tips li b{color:#ffe0a3;font-weight:700}
+  .k{color:#ffe0a3}
+  .note{font-size:12px;color:var(--dim);background:rgba(255,255,255,.04);border:1px dashed var(--line);
+    border-radius:12px;padding:10px 12px;line-height:1.65;margin-top:10px}
+  .att{display:grid;grid-template-columns:88px 1fr;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.055);font-size:13px}
+  .att:last-child{border-bottom:0}
+  .att .n{font-weight:700;color:#dfe5ee}
+  .att .d{color:var(--dim);font-size:12.5px;line-height:1.55}
+  footer{color:var(--dim);font-size:11.5px;text-align:center;margin-top:26px;line-height:1.8}
+  .hidden{display:none!important}
+  .empty{color:var(--dim);font-size:13px;text-align:center;padding:26px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img class="badge" src="icon-192.png" alt="PUBG" width="40" height="40" />
+    <div>
+      <h1>PUBG 新手手册</h1>
+      <div class="sub">枪械 · 配件 · 搭配 · 冷知识</div>
+    </div>
+  </header>
+
+  <input class="search" id="q" type="search" placeholder="搜枪名 / 配件 / 关键词，比如：M416、握把、轮胎" />
+
+  <div class="tabs">
+    <div class="tab on" data-tab="gun">枪械与配件</div>
+    <div class="tab" data-tab="tip">小知识</div>
+  </div>
+
+  <div id="view"></div>
+
+  <footer>
+    基于 PUBG 现行版本的通用经验整理 · 数值会随版本调整<br>
+    强度排名是「综合易用性 + 上限」的主观参考，不是绝对答案
+  </footer>
+</div>
+
+<script>
+/* ═══════════ 数据 ═══════════ */
+const TIERS = [
+  { t: 'T0', title: '空投级 · 拿到就赢一半', items: [
+    { n: 'AWM', tag: ['crate','hard'], d: '.300 马格南，唯一能一枪爆三级头的狙。子弹只有 20 发，别拿来打身体。' },
+    { n: 'Groza', tag: ['crate'], d: '7.62 步枪，DPS 全游戏最高之一，只能装消音/补偿。近中距离压制力极强。' },
+    { n: 'Mk14 EBR', tag: ['crate'], d: '全自动 DMR，20 发。中近距离能当步枪扫，远距离单点也稳，最全能空投枪。' },
+    { n: 'MG3', tag: ['crate'], d: '7.62 轻机枪，660/990 两档射速，趴下架枪几乎无后坐。守楼/封路之王。' },
+    { n: 'P90', tag: ['crate','easy'], d: '空投冲锋枪，50 发、自带双瞄具、后坐力极小。新手拿到也能打。' },
+  ]},
+  { t: 'T1', title: '主力级 · 有就捡，能打满一局', items: [
+    { n: 'ACE32', tag: ['easy'], d: '7.62 步枪里后坐力最温和的一把，伤害高、可控。当前版本综合最强的地面步枪之一。' },
+    { n: 'Beryl M762', tag: ['hard'], d: '7.62 步枪，DPS 高但后坐力大。配垂直握把 + 补偿器，练熟了上限极高。' },
+    { n: 'M416', tag: ['easy'], d: '5.56 老牌全能枪，满配（战术枪托 + 补偿 + 垂直）后极稳。新手首选。' },
+    { n: 'AUG A3', tag: [], d: '5.56 步枪，后坐力比 M416 更低，开镜快。空投/地面视版本而定。' },
+    { n: 'Mk12', tag: ['easy'], d: '5.56 DMR，后坐力小、射速快、弹道平。最好上手的连狙。' },
+    { n: 'Mini14', tag: ['easy'], d: '5.56 DMR，子弹初速高、下坠小，压枪几乎无压力。新手第一把连狙推荐。' },
+    { n: 'SLR', tag: ['hard'], d: '7.62 DMR，伤害比 Mk12 高一档，但后坐力明显，需要节奏感。' },
+    { n: 'Kar98k', tag: [], d: '7.62 栓狙，一枪爆二级头。经典「一发入魂」，缺点是打空要拉栓。' },
+    { n: 'M24', tag: [], d: '栓狙，拉栓比 Kar98k 快、弹道更平，综合比 98k 好用。' },
+    { n: 'Vector', tag: [], d: '.45 冲锋枪，近战 DPS 爆炸，19 发（扩容 33）。贴脸几乎无解。' },
+    { n: 'MP5K', tag: ['easy'], d: '9mm 冲锋枪，后坐力小、可控，配扩容后很稳，适合室内。' },
+    { n: 'DBS', tag: ['crate'], d: '双管泵动霰弹，近距离两连发直接带走。' },
+  ]},
+  { t: 'T2', title: '能用级 · 过渡或特定场景', items: [
+    { n: 'AKM', tag: ['hard'], d: '7.62 步枪，伤害高但后坐力狂野，且没有枪托位。会压枪的人很强。' },
+    { n: 'SCAR-L', tag: ['easy'], d: '5.56 步枪，后坐力最低、最好压，但 DPS 偏低。新手过渡很好用。' },
+    { n: 'QBZ95', tag: ['easy'], d: '5.56 步枪（萨诺特产），属性接近 M416，腰射稍好。' },
+    { n: 'G36C', tag: ['easy'], d: '5.56 步枪（维寒迪特产），稳定、好压，缺枪托位。' },
+    { n: 'Mk47 Mutant', tag: [], d: '7.62 步枪，只有单发/三连发，伤害高，当半自动 DMR 用。' },
+    { n: 'SKS', tag: [], d: '7.62 DMR，吃配件，满配后很稳，但下限低。' },
+    { n: 'Dragunov', tag: [], d: '7.62 DMR，伤害高、弹速快，后坐力比 SLR 略小。' },
+    { n: 'UMP45', tag: ['easy'], d: '.45 冲锋枪，伤害稳、后坐力小，中近距离都能打，追人很稳。' },
+    { n: 'JS9', tag: [], d: '9mm 冲锋枪，射速快，近战不错。' },
+    { n: 'Micro UZI', tag: [], d: '9mm，射速极高，贴脸秒人，但没法装倍镜、弹匣小。' },
+    { n: 'S12K', tag: [], d: '半自动霰弹，连喷容错高，室内清房好用。' },
+    { n: 'M249', tag: ['crate'], d: '5.56 轻机枪，100 发弹链，压制力强，换弹慢。' },
+    { n: 'DP-28', tag: [], d: '7.62 轻机枪，47 发，趴下架枪极稳。' },
+  ]},
+  { t: 'T3', title: '凑合级 · 没得选才用', items: [
+    { n: 'Tommy Gun', tag: [], d: '.45 冲锋枪，100 发弹鼓，但没法装倍镜、后坐力怪。' },
+    { n: 'PP-19 Bizon', tag: [], d: '9mm，53 发大弹匣，伤害偏低。' },
+    { n: 'S686', tag: [], d: '双管霰弹，两发打完就得装填。' },
+    { n: 'S1897', tag: [], d: '泵动霰弹，节奏慢。' },
+    { n: 'Win94', tag: [], d: '.45 杠杆步枪，不能装倍镜，只能机瞄。' },
+    { n: 'VSS', tag: [], d: '9mm 消音连狙，自带 4 倍镜，子弹下坠极大，伤害低。' },
+    { n: 'Mosin Nagant', tag: [], d: '栓狙，类似 Kar98k 但拉栓慢一点。' },
+  ]},
+]
+
+const ATTACH = [
+  { n: '补偿器', d: '步枪首选，后坐力降得最多。扫射必备。' },
+  { n: '消焰器', d: '隐藏枪口火焰 + 少量后坐力。夜战、怕被定位时用。' },
+  { n: '消音器', d: '声音变小、火光消失，但后坐力略高于补偿器。偷袭流首选。' },
+  { n: '垂直握把', d: '降低垂直后坐力，压枪更省力。**扫射最通用**。' },
+  { n: '直角握把', d: '降低水平后坐力，枪不容易左右乱飘。适合点射。' },
+  { n: '轻型握把', d: '单发/点射更稳，扫射不如垂直。DMR 神器。' },
+  { n: '拇指握把', d: '开镜速度更快，代价是后坐力略增。近战/刚枪向。' },
+  { n: '激光瞄准器', d: '腰射（不开镜）散布明显变小，室内贴脸很有用。' },
+  { n: '战术枪托', d: 'M416 / UMP45 专用，大幅降后坐力 + 减少晃动。**M416 的灵魂**。' },
+  { n: '托腮板', d: 'DMR / 栓狙专用，开镜时准心晃动变小。' },
+  { n: '子弹袋', d: 'Kar98k / S1897 专用，换弹更快。' },
+  { n: '弹匣', d: '优先级：**快速扩容 > 扩容 > 快速**。快扩同时加容量和换弹速度。' },
+  { n: '红点 / 全息', d: '1 倍镜，腰射转开镜最顺。红点视野更干净，全息圈更大。' },
+  { n: '2 倍 / 3 倍', d: '2 倍适合中近距离；3 倍配步枪压枪也很流行。' },
+  { n: '4 倍 / 6 倍', d: '步枪能装到 6 倍。6 倍可调 3–6 倍，一把枪兼顾中远。' },
+  { n: '8 倍', d: '只能装 DMR / 栓狙，能看到很远但晃动大，需要托腮板。' },
+  { n: '侧面瞄具', d: '装一个 1 倍小镜，主镜是 4/6 倍时按 Tab 切换，近战不慌。' },
+]
+
+const COMBOS = [
+  { n: '① 万金油：步枪 + 连狙', d: 'M416 / ACE32 + Mini14 / Mk12。中近距离打步枪，100 米外切连狙点人。**新手最推荐这套**。' },
+  { n: '② 刚枪流：步枪 + 栓狙', d: 'Beryl / ACE32 + Kar98k / M24。远距离一枪爆头，近身靠步枪。需要枪法。' },
+  { n: '③ 贴脸流：冲锋枪 + 连狙', d: 'Vector / MP5K + Mk12。城区刚枪无解，但野外对枪吃亏。' },
+  { n: '④ 空投流：Groza + AWM', d: '两把空投枪，理论上最强组合，现实中很难同时拿到。' },
+  { n: '⑤ 副武器不浪费：双步枪', d: '一把 5.56（M416）打稳定 + 一把 7.62（ACE32/Beryl）打伤害，共用 5.56/7.62 弹药不通用，注意背包。' },
+]
+
+const TIPS = [
+  { h: '载具（很多人不知道）', items: [
+    '<b>维修套件能修车</b>：可以修补被打爆的<b>轮胎</b>，也能恢复车辆耐久。跑毒被打了胎、车冒着烟，用维修套件就能救回来。',
+    '轮胎被打爆后车速会骤降、方向难控 —— 反过来，你也可以**打敌人的轮胎**拖住他们。',
+    '防弹轮胎的装甲车（BRDM-2）打不爆胎，别浪费子弹。',
+    '摩托车能上陡坡、钻树林，是最快的单人载具，但也最容易被扫下来。',
+    '坐车时可以打药（换到乘客位），司机不行。',
+    '车辆被集火会爆炸，残血车别硬开。',
+  ]},
+  { h: '投掷物', items: [
+    '手雷：拔销后 <b>3.5 秒</b>爆炸，会「延时握雷」的人能精准砸到门后的人。',
+    '烟雾弹：封视线、救队友、抢空投都能用，**多带几颗不亏**。',
+    '燃烧瓶：封楼梯、封门口，逼人出来；也能烧掉伏地魔的视线。',
+    '震爆弹：进房前先丢，致盲几秒，冲进去有优势。',
+    '<b>信号枪</b>：朝天打 = 超级空投（AWM / M249 / 装甲车级物资）；<b>朝地面打</b> = BRDM 装甲车。必须在安全区内打才有效。',
+  ]},
+  { h: '医疗与能量', items: [
+    '绷带只能回到 <b>75</b> 血，且加得慢；急救包也回到 75，但快得多；医疗箱才回到 100。',
+    '能量饮料 / 止痛药加的是<b>能量条</b>，不是直接回血：能量条会持续慢慢回血，4 格满时还会<b>加速跑</b>。',
+    '打药时蹲下或趴下更安全，医疗箱/急救包用时会移动变慢，找掩体再打。',
+    '决赛圈前把能量条拉满，毒里跑毒更快、抗打更强。',
+  ]},
+  { h: '枪械细节', items: [
+    '<b>平底锅挂在后背能挡子弹</b>，所以别把它扔掉（扔了就少一层护甲）。',
+    '把武器收起来（按 X / 快捷栏转空手）跑得更快，赶路时收枪。',
+    '换弹可以取消：切枪或开镜会打断装填，紧急情况别站着拉栓。',
+    '<b>蹲下/趴下会降低后坐力</b>，架枪时蹲着压枪更稳。',
+    '按 <b>Shift 屏息</b>能短暂稳定准心，但有时限，别一直按。',
+    '8 倍镜只能装 DMR/栓狙；6 倍镜可以手动调 3–6 倍，一把枪兼顾中远距离。',
+    'DMR 连点比狂点更准：稳住节奏打，比连发扫射命中率高。',
+    '没配件时优先捡：<b>补偿器 → 垂直握把 → 扩容</b>，这三件提升最大。',
+  ]},
+  { h: '移动与地形', items: [
+    '攀爬：对着矮墙/窗台按空格可以翻上去，上车顶、翻窗户都靠它。',
+    '游泳时不能开枪；潜水可以躲子弹，但要注意憋气条。',
+    '跳伞：先平飞再俯冲，最快能到 200+ km/h；想飞远就早开伞。',
+    '蓝圈（毒）是生命值持续掉，圈越往后伤害越高，<b>决赛圈毒里几秒就倒</b>。',
+    '白圈是安全区，注意「蓝圈收缩倒计时」，别贪搜。',
+  ]},
+  { h: '声音与信息', items: [
+    '走路、换弹、开镜、翻窗都有声音，<b>趴着移动最安静</b>。',
+    '戴耳机，枪声能听出方向；远处的枪声说明有人打架，可以捡漏。',
+    '队友倒地会喊，别慌，先清人再救。',
+    '开伞、跳伞、开车都会暴露位置，落地前想好去哪。',
+  ]},
+  { h: '新手容易踩的坑', items: [
+    '别在空旷地跑图，沿掩体（树、石头、坡）推进。',
+    '不要一个人冲楼，烟雾/手雷开路。',
+    '背包别塞太多：子弹 <b>150–200 发</b>足够，多带药和投掷物。',
+    '舔包别站着，先确认周围安全，蹲下舔。',
+    '决赛圈不要急着开枪，先找圈内最好的位置。',
+    '多去<b>训练场</b>练压枪和开镜，比排位里练快十倍。',
+  ]},
+]
+
+/* ═══════════ 渲染 ═══════════ */
+const $ = (s) => document.querySelector(s)
+let tab = 'gun'
+let q = ''
+
+function hl(text) {
+  if (!q) return text
+  const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'ig')
+  return text.replace(re, '<mark style="background:rgba(232,179,61,.35);color:#fff;border-radius:3px;padding:0 2px">$1</mark>')
+}
+
+function renderGun() {
+  const kw = q.trim().toLowerCase()
+  const out = []
+
+  out.push('<div class="sec"><div class="sec-h"><h2>枪械强度排名</h2><span class="n">综合易用性 + 上限</span></div>')
+  for (const tier of TIERS) {
+    const items = tier.items.filter((i) => !kw || i.n.toLowerCase().includes(kw) || i.d.toLowerCase().includes(kw))
+    if (!items.length) continue
+    out.push(`<div class="card" style="padding:6px 14px"><div class="tier"><div class="rank ${tier.t}">${tier.t}</div><div class="body"><div class="nm">${tier.title}</div></div></div>`)
+    for (const i of items) {
+      out.push(`<div class="tier">
+        <div class="rank ${tier.t}" style="visibility:hidden">${tier.t}</div>
+        <div class="body">
+          <div class="nm">${hl(i.n)}${i.tag.includes('crate') ? '<span class="tag crate">空投</span>' : ''}${i.tag.includes('easy') ? '<span class="tag easy">好上手</span>' : ''}${i.tag.includes('hard') ? '<span class="tag hard">要练</span>' : ''}</div>
+          <div class="ds">${hl(i.d)}</div>
+        </div>
+      </div>`)
+    }
+    out.push('</div>')
+  }
+  out.push('</div>')
+
+  const atts = ATTACH.filter((a) => !kw || a.n.toLowerCase().includes(kw) || a.d.toLowerCase().includes(kw))
+  if (atts.length) {
+    out.push('<div class="sec"><div class="sec-h"><h2>配件怎么选</h2><span class="n">优先级从高到低</span></div><div class="card">')
+    for (const a of atts) out.push(`<div class="att"><div class="n">${hl(a.n)}</div><div class="d">${hl(a.d).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')}</div></div>`)
+    out.push('</div></div>')
+  }
+
+  const combos = COMBOS.filter((c) => !kw || c.n.toLowerCase().includes(kw) || c.d.toLowerCase().includes(kw))
+  if (combos.length) {
+    out.push('<div class="sec"><div class="sec-h"><h2>两把枪怎么搭</h2><span class="n">按打法定</span></div><div class="card">')
+    for (const c of combos) out.push(`<div class="att" style="grid-template-columns:1fr"><div class="n">${hl(c.n)}</div><div class="d">${hl(c.d).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')}</div></div>`)
+    out.push('</div></div>')
+  }
+
+  if (!out.length) return '<div class="empty">没找到相关枪械，换个关键词试试</div>'
+  return out.join('')
+}
+
+function renderTip() {
+  const kw = q.trim().toLowerCase()
+  const out = []
+  for (const sec of TIPS) {
+    const items = sec.items.filter((i) => !kw || i.toLowerCase().includes(kw))
+    if (!items.length) continue
+    out.push(`<div class="sec"><div class="sec-h"><h2>${sec.h}</h2><span class="n">${items.length} 条</span></div><div class="card"><ul class="tips">`)
+    for (const i of items) {
+      const html = hl(i).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
+      out.push(`<li>${html}</li>`)
+    }
+    out.push('</ul></div></div>')
+  }
+  if (!out.length) return '<div class="empty">没找到相关小知识</div>'
+  return out.join('')
+}
+
+function render() {
+  $('#view').innerHTML = tab === 'gun' ? renderGun() : renderTip()
+}
+
+document.querySelectorAll('.tab').forEach((el) => el.addEventListener('click', () => {
+  tab = el.dataset.tab
+  document.querySelectorAll('.tab').forEach((x) => x.classList.toggle('on', x === el))
+  render()
+}))
+
+$('#q').addEventListener('input', (e) => { q = e.target.value; render() })
+
+render()
+
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {})
+</script>
+</body>
+</html>
