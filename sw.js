@@ -1,5 +1,5 @@
 ﻿/* PUBG 手册 · Service Worker：外壳离线可用 */
-const VERSION = 'pubg-v2';
+const VERSION = 'pubg-v3';
 const SHELL = [
   './', './index.html', './manifest.webmanifest',
   './icon-192.png', './icon-512.png', './icon-180.png', './icon-32.png',
