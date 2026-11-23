@@ -499,6 +499,9 @@ function renderBest() {
       <ul class="tips">${b.why.map((w) => `<li>${w.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')}</li>`).join('')}</ul>
       <div class="note"><b>备选：</b>${b.alt.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')}</div>
       <div class="note" style="border-style:solid"><b>配套背包：</b>${b.kit.join(' · ')}</div>
+      <div class="note" style="border-style:solid;border-color:rgba(92,224,160,.3)"><b>按你的两张图微调：</b>
+        <br>· <b>艾伦格</b>：就按上面这套，树林多、中距离为主，M416 + Mini14 最舒服。
+        <br>· <b>沙漠</b>：把副武器换成 <b>SLR 或 Kar98k</b>（远距离交火多），<b>烟雾带到 5 颗以上</b>，落地先找车。</div>
     </div>
   </div>`
 }
