@@ -78,6 +78,28 @@
   footer{color:var(--dim);font-size:11.5px;text-align:center;margin-top:26px;line-height:1.8}
   .hidden{display:none!important}
   .empty{color:var(--dim);font-size:13px;text-align:center;padding:26px 0}
+  /* 场景矩阵 */
+  .mx{display:grid;gap:5px;margin-top:4px}
+  .mx-row{display:grid;grid-template-columns:34px 1fr 1fr 1fr;gap:5px;align-items:stretch}
+  .mx-row > div{
+    padding:7px 7px;border-radius:8px;background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.05);font-size:10.5px;line-height:1.45;color:#cfd6df
+  }
+  .mx-row > div i{color:var(--dim);font-style:normal;font-size:9.5px;display:block;margin-top:2px}
+  .mx-row > div.k{background:transparent;border:0;color:#ffe0a3;font-weight:700;font-size:11px;display:flex;align-items:center;padding-left:0}
+  .mx-row.h > div{background:transparent;border:0;color:var(--dim);font-size:10px;letter-spacing:.04em;padding:0 2px 3px}
+  /* 最优搭配 */
+  .best-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+  .best-2 > div{background:rgba(232,179,61,.07);border:1px solid rgba(232,179,61,.25);border-radius:12px;padding:11px}
+  .best-2 .nm{font-size:13.5px;font-weight:800;color:#ffe0a3}
+  .best-2 ul{margin:6px 0 0;padding-left:15px}
+  .best-2 li{font-size:11.5px;color:#cfd6df;line-height:1.6}
+  .ver{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;padding:2px 8px;border-radius:999px;
+    border:1px solid rgba(232,179,61,.35);color:#ffe0a3;background:rgba(232,179,61,.10);vertical-align:2px}
+  .chg{border-left:2px solid rgba(232,179,61,.35);padding-left:12px;margin-left:4px}
+  .chg .v{font-weight:750;color:#ffe0a3;font-size:13px}
+  .chg .d{color:var(--dim);font-size:11px;margin-left:6px}
+  .chg .t{font-size:12.5px;color:#cfd6df;line-height:1.6;margin:2px 0 12px}
 </style>
 </head>
 <body>
@@ -85,16 +107,17 @@
   <header>
     <img class="badge" src="icon-192.png" alt="PUBG" width="40" height="40" />
     <div>
-      <h1>PUBG 新手手册</h1>
-      <div class="sub">枪械 · 配件 · 搭配 · 冷知识</div>
+      <h1>PUBG 新手手册 <span class="ver" id="ver"></span></h1>
+      <div class="sub">枪械 · 配件 · 场景配装 · 冷知识</div>
     </div>
   </header>
 
   <input class="search" id="q" type="search" placeholder="搜枪名 / 配件 / 关键词，比如：M416、握把、轮胎" />
 
   <div class="tabs">
-    <div class="tab on" data-tab="gun">枪械与配件</div>
+    <div class="tab on" data-tab="gun">枪械</div>
     <div class="tab" data-tab="tip">小知识</div>
+    <div class="tab" data-tab="ver">版本</div>
   </div>
 
   <div id="view"></div>
@@ -107,6 +130,70 @@
 
 <script>
 /* ═══════════ 数据 ═══════════ */
+const META = {
+  version: 'v34.2',
+  updatedAt: '2026-11-23',
+  note: 'PUBG 每个版本都会调整后坐力、伤害与配件效果。本手册标注适用版本，版本大改后我会更新对应条目。',
+  changelog: [
+    { v: 'v34.2', d: '2026-11-23', t: '新增按战斗场景的配装差异、当前版本最优搭配、跳点/灵敏度/按键/实战/载具五大章节；枪械表按现行版本复核。' },
+    { v: 'v1.0', d: '2026-11-23', t: '首版：枪械强度四档、配件优先级、五种搭配、30+ 条冷知识。' },
+  ],
+}
+
+/* 场景 × 配件 取舍矩阵 */
+const MATRIX = {
+  head: ['城区贴脸 0–30m', '中距对枪 50–150m', '远距点射 150m+'],
+  rows: [
+    ['枪口', '消音器 / 消焰器<br><i>藏火光比压枪重要</i>', '补偿器<br><i>后坐力是主要矛盾</i>', '消音器<br><i>一枪暴露就有人摸过来</i>'],
+    ['握把', '拇指 / 激光<br><i>开镜快、腰射准</i>', '垂直<br><i>扫射最吃垂直后坐</i>', '轻型 / 托腮板<br><i>单点求稳</i>'],
+    ['弹匣', '快扩（容量优先）', '快扩', '快扩 / 扩容'],
+    ['瞄具', '红点 / 全息 1x', '3x、4x（6x 调 3x）', '6x、8x'],
+    ['其它', '激光瞄准器', '战术枪托（M416 必备）', '托腮板 + 子弹袋'],
+  ],
+}
+
+/* 五个典型战斗场景的完整配装 */
+const SCEN = [
+  {
+    n: '① 城区贴脸（0–30 米）', w: 'Vector / MP5K / S12K / UMP45',
+    att: ['消音器或消焰器：室内交火火光很致命', '拇指握把 + 激光瞄准器：开镜快、腰射散布小', '快速扩容弹匣：贴脸连打，19 发根本不够', '红点 / 全息：1x 视野最干净'],
+    why: '这个距离**后坐力不是瓶颈**，开镜速度、腰射散布、弹容量才是。谁先抬枪谁赢。',
+  },
+  {
+    n: '② 中距离对枪（50–150 米）', w: 'M416 / ACE32 / Beryl M762',
+    att: ['补偿器：后坐力降得最多，没有之一', '垂直握把：扫射时枪口往天上飘是最大问题', '快速扩容弹匣', '3x 或 4x（6x 调到 3 倍也很好用）'],
+    why: '这是**最常发生的战斗距离**，核心是压枪稳定。M416 记得上**战术枪托**，它是这把枪的核心配件。',
+  },
+  {
+    n: '③ 远距离点射（150 米以上）', w: 'Mini14 / Mk12 / SLR / Kar98k / M24',
+    att: ['消音器：开枪就暴露位置，远距离尤其致命', '轻型握把（DMR）或子弹袋（栓狙）', '快扩 / 扩容', '6x、8x + 托腮板：减少准心晃动'],
+    why: '远距离拼的是**准心稳定 + 弹道预判**，不是射速。托腮板能明显减小开镜晃动。',
+  },
+  {
+    n: '④ 夜战 / 雾天 / 偷袭', w: '任何带消音器的枪',
+    att: ['一律消音器：声音范围减半，敌人很难判断方向', '红点 / 2x：夜战视野本来就差，别用高倍', '激光瞄准器：黑暗里腰射更准'],
+    why: '特殊天气下**信息比火力重要**。消音器不是"锦上添花"，是必选。',
+  },
+  {
+    n: '⑤ 架点防守（守楼 / 趴坡）', w: 'M249 / DP-28 / Mk14 / 连狙',
+    att: ['大弹匣优先：50、100 发压制力完全不一样', '补偿器', '4x–6x：提前 card 好进圈的路口', '脚架 / 趴姿：后坐力直接砍半'],
+    why: '架点的价值是**不让对方过来**，不是杀人。弹量、持续火力、视野比精度重要。',
+  },
+]
+
+/* 当前版本综合最优搭配 */
+const BEST = {
+  main: 'M416', mainAtt: ['补偿器', '垂直握把', '快速扩容弹匣', '战术枪托', '3x / 6x'],
+  sub: 'Mini14', subAtt: ['消音器', '轻型握把', '快速扩容弹匣', '6x / 8x + 托腮板'],
+  why: [
+    '**两把枪都用 5.56**，弹药完全共用 —— 背包只占一种子弹，能多带药和投掷物，这是很多新手忽略的隐性优势。',
+    'M416 满配后是**全游戏最好压的步枪**，容错最高；Mini14 后坐力小、弹速快、下坠小，是**最好上手的连狙**。',
+    '中距离用 M416 扫，150 米外用 Mini14 点，中间无缝衔接，没有明显的距离盲区。',
+  ],
+  alt: '想追求更高上限：把 M416 换成 ACE32（伤害更高，但要接受稍大的后坐力）；远距离换成 SLR 或 Kar98k（一枪爆头，但容错低）。',
+  kit: ['烟雾弹 ≥3、手雷 ≥2', '医疗箱 1、急救包 2–3、能量饮料 4+', '三级头优先于三级甲（头一枪就倒）'],
+}
+
 const TIERS = [
   { t: 'T0', title: '空投级 · 拿到就赢一半', items: [
     { n: 'AWM', tag: ['crate','hard'], d: '.300 马格南，唯一能一枪爆三级头的狙。子弹只有 20 发，别拿来打身体。' },
@@ -236,6 +323,51 @@ const TIPS = [
     '决赛圈不要急着开枪，先找圈内最好的位置。',
     '多去<b>训练场</b>练压枪和开镜，比排位里练快十倍。',
   ]},
+  { h: '跳点与落点', items: [
+    '**新手别去**：学校、军事基地、G 港集装箱、P 城 —— 这些地方落地 30 秒内必有人，没枪法就是送。',
+    '**稳妥发育**：航线边缘的小城、野外独立房群（俗称「野点」），落地安静搜完再进圈。',
+    '看航线：**离航线 1.5 公里以内**才跳得到；想要远点就早开伞飘过去。',
+    '落地第一优先级是**枪**，不是甲也不是药 —— 有枪能打，没枪只能跑。',
+    '落地先看四周有没有人和伞，确认安全再专心搜。',
+    '搜完一个点位就往圈里挪，别在原地耗到毒圈逼你。',
+    '高点（山顶、楼顶）视野好，但也最容易被多点集火；低地反而更安全。',
+  ]},
+  { h: '灵敏度设置', items: [
+    '新手从**低灵敏度**开始：压枪压不动可以慢慢加，一开始就太高会瞄不准。',
+    '常见参考（PC，800 DPI）：常规 40–60、开镜 30–45、8 倍镜 20–30。手机端按手感在 60–90 区间调。',
+    '**垂直灵敏度**影响压枪手感，调到「一梭子能压成一条线」为止。',
+    '去训练场对着墙打一梭子，看弹孔是不是往上飘得厉害 —— 飘太多就加垂直。',
+    '腰射和开镜可以分开设，贴脸刚枪主要靠腰射。',
+    '每次只改 5 个点，改完打两梭子适应，别一次大改。',
+  ]},
+  { h: '按键与操作', items: [
+    '**开镜模式**：右键「长按」还是「切换」，按习惯设；长按更灵活，切换更省力。',
+    '**侧身 Q/E**：卡掩体只露半个身子，是活下来最有效的操作之一。',
+    '手机端建议练**三指或四指**：左手开火、右手控视角，比两指强很多。',
+    '**自动奔跑**（默认 =）：赶路时腾出手来喝药、看地图。',
+    '投掷物用快捷键（默认 G 是手雷），比打开背包选快得多。',
+    '医疗用品设快捷键：打药时手不能离开方向键。',
+    '载具上下车、跳车键要熟 —— 跳车会被车压死，别在高速时乱跳。',
+  ]},
+  { h: '实战思路', items: [
+    '**先看圈，再打架**：打起来之前想清楚打完往哪走，否则赢了也是送毒。',
+    '进圈方式：圈边推进（安全、慢）vs 圈中心（好位置、但会被四面摸）。新手建议圈边。',
+    '听到枪声先判断**距离和方向**，能绕就绕，绕不过再打。',
+    '打不过就跑，**掩体 + 烟雾**，别站着刚。',
+    '决赛圈：蹲着比趴着好（趴下视野差、起身慢），贴着圈边找掩体。',
+    '被人架住时用烟雾弹封视线转移，别指望跑过去。',
+    '残局注意**毒圈伤害**，决赛圈在毒里几秒就倒，该进就进。',
+  ]},
+  { h: '载具与地形速查', items: [
+    '**摩托车**：最快、最灵活，能上陡坡钻树林，但没有任何保护，一枪就可能摔死。单人跑图首选。',
+    '**吉普 / UAZ**：最耐打，4 人，适合小队转移；速度一般。',
+    '**轿车 / 达契亚**：速度快、车身低（难打），但耐久一般。',
+    '**装甲车 BRDM-2**：防弹轮胎、耐久极高，但速度慢、目标大；最适合冲圈。',
+    '**三轮摩托**：极容易翻车，能不骑就不骑。',
+    '水面用船，冰面用雪地摩托，别用普通车下水。',
+    '停车**停在掩体后**（房子背面、坡后），车就是你的第二层护甲。',
+    '车速快时撞人有伤害，但别拿这个当战术。',
+  ]},
 ]
 
 /* ═══════════ 渲染 ═══════════ */
@@ -271,6 +403,12 @@ function renderGun() {
   }
   out.push('</div>')
 
+  // 结论先行：最优搭配 + 场景配装（只在没搜索时显示，避免干扰搜索结果）
+  if (!kw) {
+    out.push(renderBest())
+    out.push(renderScenarios())
+  }
+
   const atts = ATTACH.filter((a) => !kw || a.n.toLowerCase().includes(kw) || a.d.toLowerCase().includes(kw))
   if (atts.length) {
     out.push('<div class="sec"><div class="sec-h"><h2>配件怎么选</h2><span class="n">优先级从高到低</span></div><div class="card">')
@@ -287,6 +425,83 @@ function renderGun() {
 
   if (!out.length) return '<div class="empty">没找到相关枪械，换个关键词试试</div>'
   return out.join('')
+}
+
+/* 当前版本最优搭配 */
+function renderBest() {
+  const b = BEST
+  return `<div class="sec">
+    <div class="sec-h"><h2>当前版本最优搭配</h2><span class="n">${META.version} 综合结论</span></div>
+    <div class="card" style="border-color:rgba(232,179,61,.3)">
+      <div class="best-2">
+        <div>
+          <div class="nm">主武器 · ${b.main}</div>
+          <ul>${b.mainAtt.map((x) => `<li>${x}</li>`).join('')}</ul>
+        </div>
+        <div>
+          <div class="nm">副武器 · ${b.sub}</div>
+          <ul>${b.subAtt.map((x) => `<li>${x}</li>`).join('')}</ul>
+        </div>
+      </div>
+      <ul class="tips">${b.why.map((w) => `<li>${w.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')}</li>`).join('')}</ul>
+      <div class="note"><b>备选：</b>${b.alt.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')}</div>
+      <div class="note" style="border-style:solid"><b>配套背包：</b>${b.kit.join(' · ')}</div>
+    </div>
+  </div>`
+}
+
+/* 场景 × 配件 矩阵 + 五个场景的具体配装 */
+function renderScenarios() {
+  const head = `<div class="mx-row h"><div></div>${MATRIX.head.map((h) => `<div>${h}</div>`).join('')}</div>`
+  const rows = MATRIX.rows
+    .map((r) => `<div class="mx-row"><div class="k">${r[0]}</div>${r.slice(1).map((c) => `<div>${c}</div>`).join('')}</div>`)
+    .join('')
+
+  const cards = SCEN.map((s) => `<div class="att" style="grid-template-columns:1fr;padding:12px 0">
+      <div class="n">${s.n}</div>
+      <div class="d" style="color:#cfd6df;margin-top:2px"><b style="color:#ffe0a3">主武器：</b>${s.w}</div>
+      <div class="d" style="margin-top:5px">${s.att.map((a) => '· ' + a).join('<br>')}</div>
+      <div class="d" style="margin-top:6px;color:#9aa4b2">${s.why.replace(/\*\*(.+?)\*\*/g, '<b style="color:#ffe0a3">$1</b>')}</div>
+    </div>`).join('')
+
+  return `<div class="sec">
+    <div class="sec-h"><h2>不同场景 · 配件怎么变</h2><span class="n">同样的枪，配件完全不同</span></div>
+    <div class="card">
+      <div class="mx">${head}${rows}</div>
+      <div class="note">同一个配件在不同距离下的价值完全不一样：贴脸看开镜速度和腰射，中距看垂直后坐，远距看准心稳定。<b>不存在一套搭配通吃所有距离</b>。</div>
+    </div>
+    <div class="card">${cards}</div>
+  </div>`
+}
+
+/* 版本页 */
+function renderVersion() {
+  return `<div class="sec">
+    <div class="sec-h"><h2>适用版本</h2><span class="n">${META.updatedAt} 更新</span></div>
+    <div class="card">
+      <div style="font-size:22px;font-weight:800;color:#ffe0a3">${META.version}</div>
+      <div class="stats" style="margin-top:6px">${META.note}</div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sec-h"><h2>更新记录</h2><span class="n">${META.changelog.length} 条</span></div>
+    <div class="card">
+      <div class="chg">
+        ${META.changelog.map((c) => `<div><span class="v">${c.v}</span><span class="d">${c.d}</span><div class="t">${c.t}</div></div>`).join('')}
+      </div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sec-h"><h2>怎么更新</h2></div>
+    <div class="card">
+      <ul class="tips">
+        <li>PUBG 每次大版本（通常每 2–3 个月一次大改）会调整枪械数值与配件效果，<b>强度排名会有浮动</b>。</li>
+        <li>这份手册的数据写在页面里，更新时我会改对应的条目、改版本号、记一条更新记录。</li>
+        <li>你发现哪条和游戏里对不上，告诉我「版本号 + 现象」，我核对后改。</li>
+        <li>小改动（个别枪加强/削弱）我直接改；大改动（后坐力系统、配件机制变化）会整章重写。</li>
+      </ul>
+    </div>
+  </div>`
 }
 
 function renderTip() {
@@ -307,8 +522,12 @@ function renderTip() {
 }
 
 function render() {
-  $('#view').innerHTML = tab === 'gun' ? renderGun() : renderTip()
+  if (tab === 'gun') $('#view').innerHTML = renderGun()
+  else if (tab === 'tip') $('#view').innerHTML = renderTip()
+  else $('#view').innerHTML = renderVersion()
 }
+
+$('#ver').textContent = `${META.version} · ${META.updatedAt}`
 
 document.querySelectorAll('.tab').forEach((el) => el.addEventListener('click', () => {
   tab = el.dataset.tab
