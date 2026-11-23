@@ -36,10 +36,10 @@
     background:rgba(255,255,255,.05);color:var(--fg);font:inherit;font-size:14px;outline:none
   }
   .search::placeholder{color:#5f6977}
-  .tabs{display:flex;gap:8px;margin-bottom:14px}
+  .tabs{display:flex;gap:5px;margin-bottom:14px}
   .tab{
-    flex:1;text-align:center;padding:10px;border-radius:12px;border:1px solid var(--line);
-    background:rgba(255,255,255,.03);color:var(--dim);font-size:13.5px;font-weight:650;cursor:pointer
+    flex:1;text-align:center;padding:9px 2px;border-radius:11px;border:1px solid var(--line);
+    background:rgba(255,255,255,.03);color:var(--dim);font-size:12.5px;font-weight:650;cursor:pointer;white-space:nowrap
   }
   .tab.on{background:linear-gradient(160deg,rgba(232,179,61,.22),rgba(232,179,61,.06));border-color:rgba(232,179,61,.5);color:#ffe0a3}
   .sec{margin-bottom:22px}
@@ -120,6 +120,7 @@
 
   <div class="tabs">
     <div class="tab on" data-tab="gun">枪械</div>
+    <div class="tab" data-tab="squad">四排</div>
     <div class="tab" data-tab="tip">小知识</div>
     <div class="tab" data-tab="map">地图</div>
     <div class="tab" data-tab="ver">版本</div>
@@ -136,12 +137,13 @@
 <script>
 /* ═══════════ 数据 ═══════════ */
 const META = {
-  version: 'v34.3',
+  version: 'v34.4',
   updatedAt: '2026-11-23',
-  mode: 'TPP · 第三人称',
+  mode: 'TPP · 四排',
   maps: '艾伦格 + 米拉玛（沙漠）',
-  note: 'PUBG 每个版本都会调整后坐力、伤害与配件效果。本手册标注适用版本，版本大改后我会更新对应条目。当前内容按 TPP 模式、以艾伦格与沙漠为主整理。',
+  note: 'PUBG 每个版本都会调整后坐力、伤害与配件效果。本手册标注适用版本，版本大改后我会更新对应条目。当前内容按 TPP 四排、以艾伦格与沙漠为主整理。',
   changelog: [
+    { v: 'v34.4', d: '2026-11-23', t: '新增「四排」专页：四人分工、走位原则、打架流程、物资分配、四排专属机制、决赛圈站位。' },
     { v: 'v34.3', d: '2026-11-23', t: '按 TPP 模式校准：新增「地图」页（艾伦格 / 米拉玛 落点、地形、载具、打法），新增 TPP 专项技巧，跳点与载具章节按两张图重写。' },
     { v: 'v34.2', d: '2026-11-23', t: '新增按战斗场景的配装差异、当前版本最优搭配、跳点/灵敏度/按键/实战/载具五大章节；枪械表按现行版本复核。' },
     { v: 'v1.0', d: '2026-11-23', t: '首版：枪械强度四档、配件优先级、五种搭配、30+ 条冷知识。' },
@@ -236,6 +238,71 @@ const BEST = {
   alt: '想追求更高上限：把 M416 换成 ACE32（伤害更高，但要接受稍大的后坐力）；远距离换成 SLR 或 Kar98k（一枪爆头，但容错低）。',
   kit: ['烟雾弹 ≥3、手雷 ≥2', '医疗箱 1、急救包 2–3、能量饮料 4+', '三级头优先于三级甲（头一枪就倒）'],
 }
+
+/* 四排专项 */
+const SQ = [
+  {
+    h: '四个人怎么分工',
+    items: [
+      '**指挥（IGL）**：定落点、定路线、定打不打。四排最忌讳四个人各打各的，**必须一个人拍板**。',
+      '**突击手**：第一个进门/翻墙的人，带冲锋枪或霰弹，负责打近身。',
+      '**支援位**：紧跟着突击手，负责补枪和给突击手打掩护，多带药。',
+      '**狙击 / 自由人**：拿 DMR 或栓狙看远点，负责报点和第一枪。',
+      '人少时（剩 2–3 人）：合并成「一个突击 + 一个远点」，别再分四个方向。',
+    ],
+  },
+  {
+    h: '走位：别扎堆，别并排',
+    items: [
+      '**间距 15–30 米**：四个人挤在一起，一颗手雷能团灭；分太开又救不到，这个距离最合适。',
+      '**不要并排走**：并排等于给对面一排靶子，**前后错开**或者 2-2 分两侧。',
+      '**交叉火力**：两个人卡同一个方向的不同角度，敌人躲一边就被另一边打。',
+      '**拉枪线**：打架时别四个人挤同一面墙，分两三个角度同时压。',
+      '**转移用两辆车**：一车探路、一车跟，被打掉一辆还有退路。',
+    ],
+  },
+  {
+    h: '打架的标准流程',
+    items: [
+      '**先报点再开枪**：方向（几点钟）+ 距离 + 几个人 + 有没有掩体，四个字说完。',
+      '**集火同一个目标**：四排打一个人 1 秒就倒，比四个人各打各的有效得多。',
+      '**打倒别急着补**：四排倒地的人会被队友救，**先控场**（卡住救人路线），等他队友来救再打。',
+      '**有人倒地：先清威胁，再救**。救的时候必须有人架枪，不能四个人一起蹲下去按 F。',
+      '**被架住就封烟**：至少两个人同时丢烟，封出一条能走的通道。',
+      '**打完立刻换位**：原地不动会被下一队摸过来。',
+    ],
+  },
+  {
+    h: '四排的物资分配',
+    items: [
+      '**高倍镜给狙击手**：8 倍、6 倍优先给拿 DMR/栓狙的人，别四个人抢。',
+      '**配件优先给主力步枪**：补偿器、垂直握把集中在一个人身上，别一人一半谁都不好压。',
+      '**烟雾平均分**：**每人至少 3 颗**，救人、转移、封路全靠它。',
+      '**弹药互相补**：5.56 和 7.62 各指定一个人多带，打完互相给。',
+      '**医疗箱给支援位**：他要负责救人，药要最多。',
+    ],
+  },
+  {
+    h: '四排专属机制（很多人不知道）',
+    items: [
+      '**四排倒地不会立刻死**，有出血时间，队友能救（约 10 秒），救起来血很低，先打药再走。',
+      '**被队友的箱子**：队友彻底死亡后留下盒子，可以捡他的装备和子弹。',
+      '**标记系统**：标记敌人、物资、要去的位置，比语音更快更准，四排一定要用。',
+      '**队友的载具**：四个人上车前先确认谁开、谁坐哪，跳车会被压死。',
+      '**最后一人活着时**，队友可以继续观战报点，别急着退。',
+    ],
+  },
+  {
+    h: '四排决赛圈',
+    items: [
+      '**四个人分四个方向**，别都朝一边看，被背后摸是最常见的团灭方式。',
+      '**谁先被打，其他人立刻压**：对面开枪就暴露了位置，是反打的窗口。',
+      '**封一半打一半**：用烟雾封住威胁最大的一侧，集中火力清另一侧。',
+      '**留一个人看屁股**：决赛圈永远有人在绕后。',
+      '**别四个人一起冲最后一个房**：留两个人在外架枪，两个人进。',
+    ],
+  },
+]
 
 const TIERS = [
   { t: 'T0', title: '空投级 · 拿到就赢一半', items: [
@@ -501,7 +568,8 @@ function renderBest() {
       <div class="note" style="border-style:solid"><b>配套背包：</b>${b.kit.join(' · ')}</div>
       <div class="note" style="border-style:solid;border-color:rgba(92,224,160,.3)"><b>按你的两张图微调：</b>
         <br>· <b>艾伦格</b>：就按上面这套，树林多、中距离为主，M416 + Mini14 最舒服。
-        <br>· <b>沙漠</b>：把副武器换成 <b>SLR 或 Kar98k</b>（远距离交火多），<b>烟雾带到 5 颗以上</b>，落地先找车。</div>
+        <br>· <b>沙漠</b>：把副武器换成 <b>SLR 或 Kar98k</b>（远距离交火多），<b>烟雾带到 5 颗以上</b>，落地先找车。
+        <br>· <b>四排分工</b>：别四个人都拿 M416 —— 狙击手带 DMR/栓狙 + 高倍镜，突击手带 SMG/霰弹，支援位多背药。</div>
     </div>
   </div>`
 }
@@ -610,8 +678,24 @@ function renderTip() {
   return out.join('')
 }
 
+/* 四排页 */
+function renderSquad() {
+  const kw = q.trim().toLowerCase()
+  const out = []
+  for (const sec of SQ) {
+    const items = sec.items.filter((i) => !kw || i.toLowerCase().includes(kw))
+    if (!items.length) continue
+    out.push(`<div class="sec"><div class="sec-h"><h2>${sec.h}</h2><span class="n">${items.length} 条</span></div><div class="card"><ul class="tips">`)
+    for (const i of items) out.push(`<li>${hl(i).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')}</li>`)
+    out.push('</ul></div></div>')
+  }
+  if (!out.length) return '<div class="empty">没找到相关四排内容</div>'
+  return out.join('')
+}
+
 function render() {
   if (tab === 'gun') $('#view').innerHTML = renderGun()
+  else if (tab === 'squad') $('#view').innerHTML = renderSquad()
   else if (tab === 'tip') $('#view').innerHTML = renderTip()
   else if (tab === 'map') $('#view').innerHTML = renderMap()
   else $('#view').innerHTML = renderVersion()
